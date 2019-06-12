@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+	canvas {
+		display: block;
+		margin: 0 auto;
+		border: 1px solid red;
+	}
+	#box {
+		width: 356px;
+		height: 40px;
+		border: 3px solid skyblue;
+		margin: 0 auto;
+		font-size: 25px;
+		line-height: 40px; 
+		text-align: center;
+		color: pink;
+		position: relative;
+	}
+	span {
+		color: red;
+		font-weight: bold;
+	}
+	#mask {
+		position: absolute;
+		top: 44px;
+		left: -2px;
+		width: 360px;
+		height: 512px;
+		/*border: 1px solid red;*/
+		background-color: rgba(0,0,255,.5);
+		text-align: center;
+	}
+	#mask #start {
+		margin-top: 200px;
+	}
+	/*#mask #gameover {
+		margin-top: 10px;
+		display: none;
+	}*/
+	#score {
+		width: 100px;
+		height: 60px;
+		border: 3px solid blue;
+		position: absolute;
+		left: 100px;
+		top: 30px;
+		text-align: center;
+		line-height: 60px;
+		font-size: 40px;
+		font-weight: bold;
+		color: red;
+	}
+	p {
+		margin: 0 auto;
+		font-size: 12px;
+	}
+	</style>
+</head>
+<body>
+	<div id="box">
+		点击<span>PgUp</span>进行游戏
+		<div id="mask">
+			<img src="images/title.png" id="start" alt="">
+			<!-- <img src="images/text_game_over.png" id="gameover" alt=""> -->
+		</div>
+	</div>
+	<canvas width="360" height="512" id="mycanvas"></canvas>
+	<div id="score">0</div>
+	<p>* 浏览器环境效果更佳</p>
+	<script type="text/javascript" src="js/Pipe1.js"></script>
+	<script type="text/javascript" src="js/Background1.js"></script>
+	<script type="text/javascript" src="js/Bird1.js"></script>
+	<script type="text/javascript" src="js/Game1.js"></script>
+	<script type="text/javascript">
+	
+	// 盛放图片的数组
+	var imgArr = ["images/bg_day.png", "images/bird0_0.png", "images/bird0_1.png", "images/bird0_2.png", "images/land.png", "images/pipe_down.png", "images/pipe_up.png","images/text_game_over.png"]
+
+	var mask = document.getElementById("mask");
+	var score = document.getElementById("score");
+	setTimeout(function(){
+		mask.style.display = "none";
+		loadImage(imgArr,function(img) {
+			var canvas = document.getElementById("mycanvas");
+			var ctx = canvas.getContext("2d");
+	
+			var bird = new Bird(img.slice(1,4),200,100);
+			var pipe = new Pipe(img[5],img[6],4,360);
+			var land = new Background(img[4],4,0,400);
+			var mountain = new Background(img[0],2,0,0);
+	
+			window.g = new Game(ctx,bird,pipe,land,mountain,img[7]);
+		})
+		function loadImage(imgArr,callBack) {
+			var idx = 0;
+			var loadimgArr = [];
+
+			imgArr.forEach(function(value,index) {
+				var img = new Image();
+				img.src = value;
+
+				img.onload = function() {
+					idx ++;
+					loadimgArr[index] = this;
+					if(idx === imgArr.length) {
+						callBack(loadimgArr);
+					}
+				}
+
+			})
+		}
+	}, 1000)
+	// loadImage(imgArr,function(img) {
+	// 	var canvas = document.getElementById("mycanvas");
+	// 	var ctx = canvas.getContext("2d");
+
+	// 	var bird = new Bird(img.slice(1,4),200,100);
+	// 	var pipe = new Pipe(img[5],img[6],4,360);
+	// 	var land = new Background(img[4],4,0,400);
+	// 	var mountain = new Background(img[0],2,0,0);
+
+	// 	window.g = new Game(ctx,bird,pipe,land,mountain);
+	// })
+	// function loadImage(imgArr,callBack) {
+	// 	var idx = 0;
+	// 	var loadimgArr = [];
+
+	// 	imgArr.forEach(function(value,index) {
+	// 		var img = new Image();
+	// 		img.src = value;
+
+	// 		img.onload = function() {
+	// 			idx ++;
+	// 			loadimgArr[index] = this;
+	// 			if(idx === imgArr.length) {
+	// 				callBack(loadimgArr);
+	// 			}
+	// 		}
+
+	// 	})
+
+	// }
+
+
+	</script>
+</body>
+</html>
